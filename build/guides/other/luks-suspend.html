@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Extremely Secure Full Disk Encryption with Suspend-to-Ram</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../templates/style.css" />
+<div class="navbar" >
+	<a href="/index.html"><div class="navbar_item"><li>&#160&#160&#160;Home&#160&#160&#160;</li></div></a><a href="/guides"><div class="navbar_item"><li>&#160&#160&#160;Guides&#160&#160&#160;</li></div></a><a href="/resources"><div class="navbar_item"><li>&#160&#160&#160;Resources&#160&#160&#160;</li></div></a><a href="/contact"><div class="navbar_item"><li>&#160&#160&#160;Contact&#160&#160&#160;</li></div></a><a href="https://www.ebay.ca/sch/calagr93/m.html"><div class="navbar_item"><li>&#160&#160&#160;Store&#160&#160&#160;</li></div></a>
+</div>
+<br>
+<div class="rest">
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Extremely Secure Full Disk Encryption with Suspend-to-Ram</h1>
+</header>
+<div class=toc>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#preliminary-note">Preliminary Note</a></li>
+<li><a href="#creating-encrypted-boot-partition">Creating Encrypted Boot Partition</a></li>
+<li><a href="#set-up-fstab">Set up Fstab</a></li>
+<li><a href="#set-up-grub">Set up GRUB</a></li>
+<li><a href="#set-up-suspend-to-ram">Set up Suspend-to-Ram</a></li>
+</ul>
+</nav>
+</div>
+<p>This guide is aimed at helping those with a librebooted/corebooted system to take advantage of full disk encryption with LUKS2. By the end of this guide you should have a system with an encrypted boot and root partition which will lock your root partition on suspend.</p>
+<p>If you follow this guide then all your data will be encrypted when your computer is off. Encrypting the boot partition according to this guide will also make your machine rootkit <em>resistant.</em> With an unencrypted boot partition, an attacker could insert malicious code to save and transmit your root key on boot - totally defeating the purpose of full disk encryption.</p>
+<p><em>Note:</em> You will have to use a less secure encryption method for the boot partition due to the current limitation of GRUB2. An attacker could, given sufficient time, brute force your boot partition to reveal the key. As long as you use a different key for your root partition, this brute force attack would not compromise your documents/programs. You should therefore use a much stronger and totally different key for your root partition.</p>
+<p>This guide assumes that you already have an encrypted root partition in conjunction with an unencrypted boot partition. An unencrypted boot partition is the standard way disk encryption is implemented. If you selected ‘full disk encryption’ in a linux installer, then this is likely how your system works right now. If you’re lost, you should consult your distro’s docs on creating a system with full disk encryption then come back.</p>
+<p><strong>Use case/Motivation:</strong> This guide is useful for anyone who wants to secure against:</p>
+<ul>
+<li><strong>Rootkits:</strong>
+<ul>
+<li>Even with less secure encryption, an attacker would need time to brute force the boot partition. This means that you can feel safe leaving your machine for several hours, knowing that an attacker isn’t installing malicious code into your machine.</li>
+</ul></li>
+<li><strong>Data theft:</strong>
+<ul>
+<li>This could be especially useful for attorneys facing unscrupulous airport security. If forced to hand over a machine with privileged information, an attorney could simply refuse to give his/her passphrase.</li>
+</ul></li>
+</ul>
+<h1 id="preliminary-note">Preliminary Note</h1>
+<p>Encrypting partitions on an existing machine will cause GRUB to fail until you’ve edited its configuration appropriately. If you’re coming from an existing system, you should keep a backup of your existing boot partition unencrypted. Doing this means that during reboot you can simply change the ‘set root’ directive to point to your backup. For example, if you create a new encrypted boot partition /dev/sda1 and backup your existing partition to /dev/sda3 then you can press ‘e’ at the grub menu and change the command:</p>
+<pre><code>set root=(ahci0,msdos1) # old
+set root=(ahci0,msdos3) # new</code></pre>
+<p>You will then be able to boot normally by pressing <kbd>F10</kbd>. NOTE: the partition names in grub will depend on what type of disk you use.</p>
+<h1 id="creating-encrypted-boot-partition">Creating Encrypted Boot Partition</h1>
+<p>I recommend creating a separate boot and root partition. Grub2 currently (Oct 2021) supports luks2 encryption, which is great, but only the (not very strong) PBKDF2 algorithm. This means that you could create one single disk to cut down on password entries, but the entire disk would have to be less secure. Instead, we’ll create a purposely less secure /boot partition and a very secure root partition. Start by creating a boot partition of around 1GB, you don’t have to format it to anything as LUKS will overwrite it anyway. If you’re lost on how to do this, Gparted is a simple graphical program that comes with the parabola installer and will make things very easy. Now that you have your new boot partition, you can proceed. <em>Note:</em> Keep your old boot partition around if you have it, just make sure that the new partition is the first one on the partition table for your disk (/dev/sda1).</p>
+<p><strong>Step 1:</strong> Create a LUKS2 formatted device with the PBKDF2 algorithm. You can play around with the iteration count. A higher iteration is more secure but will take GRUB a <strong>very</strong> long time to decrypt. The <a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">debian encrypted boot guide</a> recommends a count of 50,000 which will still take GRUB a very long time (around 25 seconds) but is faster than the default 100,000. I’ll use and arbitrarily low count. You’ll also want to use a different password than you intend to use (or already use) for your root partition. We don’t want someone to be able to get our root key by brute-forcing our less secure boot key.</p>
+<p><code>sudo cryptsetup luksFormat /dev/sda1 --type luks2 --pbkdf pbkdf2 --pbkdf-force-iterations 20000</code></p>
+<p><strong>Step 2:</strong> Format and mount the new LUKS2 device. If you’re installing a new system then you can simply mount your new device at /boot and install as normal.</p>
+<pre><code>sudo cryptsetup luksOpen /dev/sda1 boot
+sudo mkfs.ext4 -L boot /dev/mapper/boot
+sudo mkdir -p /mnt/luksboot
+sudo mount /dev/mapper/boot /mnt/luksboot # for transition
+sudo mount /dev/mapper/boot /boot # for installing</code></pre>
+<p><strong>Step 3:</strong> If you’re transitioning an existing system, then copy the contents of /boot to the new encrypted partition. If you already had a separate boot partition then you’ll need to remount it, it will likely be /dev/sda3 if you only had a boot and root partition before starting this guide. If not, then your boot files will be at /boot on your root partition.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mount /dev/sda3 /boot <span class="co"># For a separate boot partition</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp <span class="at">-r</span> /boot/<span class="pp">*</span> /mnt/boot/ <span class="kw">&amp;&amp;</span> <span class="fu">sync</span></span></code></pre></div>
+<p><strong>Step 4:</strong> Comment out existing boot partition from your fstab. If you don’t then your system will hang on reboot because it can’t mount the new LUKS device.</p>
+<pre><code>sudo vim /etc/fstab
+#UUID=blah-blah-blah /boot ext4 defaults 0 1</code></pre>
+<h1 id="set-up-fstab">Set up Fstab</h1>
+<blockquote>
+<p>The device holding the kernel (and the initramfs image) is unlocked by GRUB, but the root device needs to be unlocked again at initramfs stage, regardless whether it’s the same device or not. This is because GRUB boots with the given vmlinuz and initramfs images, but there is currently no way to securely pass cryptographic material (or Device Mapper information) to the kernel. Hence the Device Mapper table is initially empty at initramfs stage; in other words, all devices are locked, and the root device needs to be unlocked again.</p>
+<p>- <a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">Debian Guide</a></p>
+</blockquote>
+<p><strong>Step 1:</strong> Here, we’re net trying to store the root key as we don’t want to jeopardize the integrity of our root device. Instead, we want to store the key for the boot device.</p>
+<pre><code>sudo mkdir -m0700 /etc/keys
+su -c &#39;( umask 0077 &amp;&amp; dd if=/dev/urandom bs=1 count=64 of=/etc/keys/boot.key conv=excl,fsync )&#39;
+sudo cryptsetup luksAddKey /dev/sda1 /etc/keys/boot.key</code></pre>
+<p><strong>Step 2:</strong> Add your boot device to your crypttab. You’ll need to have the device’s UUID.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lsblk</span> <span class="at">-o</span> <span class="st">&#39;PATH,LABEL,UUID&#39;</span> <span class="co"># to get UUID</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> vim /etc/crypttab</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> boot_crypt <span class="va">UUID</span><span class="op">=</span>YOUR_UUID <span class="ex">/etc/keys/boot.key</span> luks,discard,key-slot=1</span></code></pre></div>
+<p><strong>Step 3:</strong> Add the crypt device to your fstab. Use ‘mount -a’ to test your fstab configuration. NOTE: you will not be able to mount the device until it has been unlocked and mapped, rebooting with your new crypttab should do this automatically.</p>
+<pre><code>sudo vim /etc/fstab
+
+&gt; /dev/mapper/boot_crypt /boot ext4 defaults 0 1
+sudo mount -a</code></pre>
+<h1 id="set-up-grub">Set up GRUB</h1>
+<p>If you already use my <a href="https://github.com/shmalebx9/Bleeding-Libreboot">libreboot builds</a> then you are good to go, no further configuration should be needed. You should note that this guide assumes you have GRUB 2.06 or later. You’ll need to make sure GRUB actually knows how to use your new encrypted device. This part is very tricky, and get you into some hot water if you do something wrong, that’s why you should keep an unencrypted backup of your boot partition just in case.</p>
+<p><strong>Step 1:</strong> Get your default grub config for your distro. You want to inspect the first menu entry for the variables you’ll need. I’ll show mine as an example.</p>
+<pre><code>sudo cat /boot/grub/grub.cfg
+
+menuentry &#39;Void GNU/Linux&#39; --class void --class gnu-linux --class
+gnu --class os $menuentry_id_option &#39;gnulinux-simple-349bfd43-40e0-41c9-84fe-94b599a0dcce&#39; {
+        load_video
+        set gfxpayload=keep
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root=&#39;hd0,msdos1&#39;
+        if [ x$feature_platform_search_hint = xy ]; then
+          search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1  f9a998c1-ccf7-4133-9318-be5601286abc
+        else
+          search --no-floppy --fs-uuid --set=root f9a998c1-ccf7-4133-9318-be5601286abc
+        fi
+        echo    &#39;Loading Linux 5.13.19_1 ...&#39;
+        linux   /vmlinuz-5.13.19_1 root=UUID=UUID_OF_ROOT_PARTITION ro  loglevel=4 rd.auto=1 cryptdevice=/dev/sda2:root
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initramfs-5.13.19_1.img
+}</code></pre>
+<p><strong>Step 2:</strong> Get your current libreboot/coreboot rom. If you get stuck, see the <a href="/guides/flashing/flashin-internal.html">internal flashing guide</a></p>
+<pre><code>sudo flashrom -p internal -r old.rom
+cbfstool old.rom extract -n grub.cfg -f grub.cfg</code></pre>
+<p><strong>Step 3:</strong> Create a simplified menuentry based on the default one in the grub.cfg you extracted from your current rom. You’ll shouldn’t need to do more than copy the kernel options (the text following ‘linux’). See the config below for an example menuentry.</p>
+<pre><code>...
+menuentry &#39;Load OS Directly [o]&#39; --hotkey=&#39;o&#39; {
+        set gfxpayload=keep
+        insmod gzio
+        insmod part_msdos
+        cryptomount (ahci0,msdos1)
+        set root=&#39;crypto0&#39;
+        echo    &#39;Loading Linux&#39;
+        linux   /vmlinuz root=UUID=349bfd43-40e0-41c9-84fe-94b599a0dcce ro loglevel=4 rd.auto=1 cryptdevice=/dev/sda2:root iomem=relaxed
+        echo    &#39;Loading initial ramdisk&#39;
+        initrd  /initramfs.img
+}
+...</code></pre>
+<p>In my example, I have the current initramfs and vmlinuz symbolically linked to the actual files in boot. Doing this ensures that the rom we flash will always load the correct files.</p>
+<pre><code>sudo ln -s /boot/initramfs-5.13.19_1.img /boot/initramfs.img
+sudo ln -s /boot/vmlinuz-5.13.19_1 /boot/vmlinuz-5.13.19_1</code></pre>
+<p>You need to be aware that this grub entry will always load those linked files, so you need to update the links if you upgrade your kernel.</p>
+<p><strong>Step 4:</strong> Insert the new grub.cfg into your rom and flash it to your BIOS chip.</p>
+<pre><code>cbfstool old.rom remove -n grub.cfg -f grub.cfg
+cbfstool old.rom add -f grub.cfg -n grub.cfg -t raw
+sudo flashrom -p internal -w old.rom</code></pre>
+<h1 id="set-up-suspend-to-ram">Set up Suspend-to-Ram</h1>
+<p>Once you unlock a LUKS device, the key is in memory. If you suspend your machine by closing the lid (or manually), the key remains in memory. LUKS encryption will therefore not protect any of the data on your root partition when you close the lid. If an attacker raises the machine from suspend then they can already access your data.</p>
+<p>The command ‘luksSuspend’ will flush the key from memory and protect your data until you re-enter your passphrase. Unfortunately, once your disk is locked you cannot access any programs on your disk - including the crypsetup program to enter your passphrase!</p>
+<p>To get around this problem, we can create a tiny linux system inside the boot partition which will have the tools to suspend our machine and decrypt our root partition. You will then be able to secure your data without shutting down.</p>
+<p>This guide will walk you through how to use my <a href="https://github.com/shmalebx9/luks-suspend-portable">portable LUKS suspend script</a></p>
+<p><strong>Step 1:</strong> Clone the project from my github.</p>
+<pre><code>git clone https://github.com/shmalebx9/luks-suspend-portable
+cd luks-suspend-portable</code></pre>
+<p><strong>Step 2:</strong> Extract the alpine linux rootfs to your boot partition.</p>
+<pre><code>sudo mkdir /boot/suspend
+sudo tar xvf suspend-chroot.tar.gz -C /boot/suspend</code></pre>
+<p><strong>Step 3:</strong> Configure the suspend script to your liking. The script currently uses Xsecurelock for screen locking and changes the keyboard layout before and after being run. You will probably want to at least just remove the commands beginning with ‘loadkeys.’ Once the script is to your liking, move it to somewhere it your <em>root user’s</em> PATH and make it executable.</p>
+<pre><code>sudo cp zzzluks /usr/bin/
+sudo chmod +x /usr/bin/zzzluks</code></pre>
+<p>Now you can test that the script is working:</p>
+<p><code>sudo zzzluks</code></p>
+<p><strong>Step 4:</strong> Make ‘zzzluks’ the default suspend action. How this is done may differ by distro, and certain DE’s will also have their own suspend settings. On most systems though, this is just a matter of editing your acpi handler script and restarting the acpid service.</p>
+<pre><code>sudo vim /etc/acpi/handler.sh
+
+...
+ button/lid)
+        case &quot;$3&quot; in
+                close)
+                        # suspend-to-ram
+                        logger &quot;LID closed, suspending...&quot;
+            #zzz
+                        zzzluks
+                        ;;
+                open)   logger &quot;LID opened&quot; ;;
+                *) logger &quot;ACPI action undefined (LID): $2&quot;;;
+        esac
+        ;;
+...</code></pre>
+<p>Now that you’re done, you can restart the acpid service or simply reboot and you should find that your root disk is locked when you close the lid.</p>
+</body>
+</div>
+</html>

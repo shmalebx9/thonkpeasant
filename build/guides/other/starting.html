@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Starting Out With Libreboot</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../templates/style.css" />
+<div class="navbar" >
+	<a href="/index.html"><div class="navbar_item"><li>&#160&#160&#160;Home&#160&#160&#160;</li></div></a><a href="/guides"><div class="navbar_item"><li>&#160&#160&#160;Guides&#160&#160&#160;</li></div></a><a href="/resources"><div class="navbar_item"><li>&#160&#160&#160;Resources&#160&#160&#160;</li></div></a><a href="/contact"><div class="navbar_item"><li>&#160&#160&#160;Contact&#160&#160&#160;</li></div></a><a href="https://www.ebay.ca/sch/calagr93/m.html"><div class="navbar_item"><li>&#160&#160&#160;Store&#160&#160&#160;</li></div></a>
+</div>
+<br>
+<div class="rest">
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Starting Out With Libreboot</h1>
+</header>
+<div class=toc>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#what-is-how-do">What Is? How Do?</a></li>
+<li><a href="#update-embedded-controller">Update Embedded Controller</a></li>
+<li><a href="#libreboot-the-machine">Libreboot the Machine</a></li>
+<li><a href="#make-it-awesome">Make it Awesome</a></li>
+</ul>
+</nav>
+</div>
+<style>
+.indexentry {
+    margin: 14px 7px 0px;
+    display: block;
+    float: left;
+    min-height: 80px;
+    width: 90%;
+}
+@media screen and (min-width: 800px) {
+    .indexentry {
+    width: 45%
+    }
+}
+</style>
+<p>This guide assumes you know nothing at all about libreboot or old thinkpads. By the end of this guide, you’ll hopefully get an idea of how to get a perfect setup like my own.</p>
+<h2 id="what-is-how-do">What Is? How Do?</h2>
+<p>Libreboot is simply a FOSS alternative to the proprietary firware on your machine. Libreboot will initiate your hardware (CPU and RAM) and then load a <em>payload.</em> The payload is what you’ll actually see and use once you’ve installed libreboot, but it is distinct from libreboot itself. GRUB is the standard payload, it’s the default bootloader for basically any x86 linux system. Seabios, is another payload which is more similar to a basic BIOS.</p>
+<p>If you choose to install any of my libreboot builds, your system will boot to GRUB with the option to load Seabios as well. The GRUB configuration inside my builds (and mainline libreboot) is fairly robust, but it may fail to load some liveUSBs. For most users, this means that you can libreboot your machine, load your installer usb from Seabios, then let libreboot load your installed OS without any user intervention. It works this way because the GRUB config inside libreboot will find your distro’s GRUB config in your /boot partition/directory and <em>source</em> it. To be clear, libreboot is not <em>chainloading</em> GRUB from your hard drive, it is just using your distro’s config on the GRUB payload running in libreboot. You needn’t install a bootloader when you install your OS, becaus it will just be skipped over; it won’t hurt though. If you’re unsure, just follow your distro’s install guide including the GRUB installation and enjoy your OS without any issues.</p>
+<p>If the information above seems opaque, then don’t worry. Once you install libreboot you will not need to know anything I’ve explained in this section. All you really need to understand is that if your liveUSB fails to boot from GRUB, then select Seabios, press <kbd>Esc</kbd> and then select your usb.</p>
+<p>The next sections will detail the steps to installing libreboot on any thinkpad.</p>
+<h2 id="update-embedded-controller">Update Embedded Controller</h2>
+<p>The embedded Controller <em>(EC)</em> is firmware on your machine that handels physical input like your keyboard. Lenovo has released a few different versions of this firmware since they made the machines. The EC that came with your machine is <em>likely</em> fine, and you won’t experience any issues using it. EC updates can only be done with a stock BIOS, so you should just update it before installing libreboot. Lenovo/IBM offer an EC updater for proprietory gatezware (Windows) as well as an update CD. If your machine came with windows, then you can boot to windows, download the update utility, and run it. If you don’t have windows installed, or you just don’t want to wait 10,000 hours to boot it and enter hell, then you can covert the update CD to a USB image then boot your usb and run the utility.</p>
+<p>You can check your EC version by pressing <kbd>F1</kbd> at your BIOS splash screen. The table below shows the latest version for different models. You need to update the EC if your version is different than what’s listed in the table. For other models, refer to the <a href="https://www.thinkwiki.org/wiki/BIOS_Upgrade_Downloads">Thinkwiki page.</a></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Machine</th>
+<th style="text-align: center;">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">T400</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">T500</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">W500</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">X200</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">X200t</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">X200s</td>
+<td style="text-align: center;">1.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">T400s</td>
+<td style="text-align: center;">1.02</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1:</strong> Download my EC update image. This image will work on any USB with at least 2GB of storage. I have an image which you can download <a href="https://drive.google.com/file/d/1pbhlaQ-Chnqt9NXDsuUPXFdfSBXQYjr-/view?usp=sharing">here.</a> That image can be used to update the EC on a T400/R400/T400/R500/W500/X200.</p>
+<p><strong>Step 2:</strong> Extract the image.</p>
+<p><code>unxz ECUpdate.img.xz</code></p>
+<p><strong>Step 3:</strong> Determine your which device is your USB drive. Your usb is probably /dev/sdb. Run lsblk before and after inserting the USB if you’re unsure, the new entry is your usb.</p>
+<p><strong>Step 4:</strong> Flash the image to the usb. This command assumes your usb drive is /dev/sdb. You need to be certain of which device is your usb as dd will completely destroy <strong>all</strong> existing data on the device.</p>
+<p><code>sudo dd if=ECUpdate.img of=/dev/sdb bs=4M status=progress &amp;&amp; sync</code></p>
+<p><strong>Step 5:</strong> Boot from the usb by pressing <kbd>F12</kbd> at the BIOS splash screen. Follow the instructions to update your EC. <em>Note:</em> the utility will not work unless your battery is fully charged and your machine is connected to power.</p>
+<h2 id="libreboot-the-machine">Libreboot the Machine</h2>
+<a href=/guides/flashing/t400-libreboot.html>
+<div class="indexentry">
+<p><strong>Thinkpad T400 Libreboot Guide</strong></p>
+<p>The T400 is my preferred machine for daily use. In this guide, you’ll learn how to make it your own.</p>
+</div>
+</a> <a href=/guides/flashing/t500-libreboot.html>
+<div class="indexentry">
+<p><strong>Thinkpad T500 Libreboot Guide</strong></p>
+<p>This machine is the biggest and baddest libreboot-compatible laptop on the market. Free this beast and join the FOSS gang.</p>
+</div>
+</a> <a href=/guides/flashing/x200-libreboot.html>
+<div class="indexentry">
+<p><strong>Thinkpad X200 Libreboot Guide</strong></p>
+<p>The X200 is overrated in my humble opinion. The immense popularity of this tiny workstation however, makes it a stellar candidate for a freedom injection</p>
+</div>
+</a>
+<div style="clear:both;">
+
+</div>
+<h2 id="make-it-awesome">Make it Awesome</h2>
+<p>Now you can proceed to put a quad core processor in your machine if you went with a T400/T500. Apply the cooling mod as well to make sure your quad machine doesn’t overheat. If you want, you can now create a fully encrypted machine as well.</p>
+<a href=/guides/other/cool.html>
+<div class="indexentry">
+<p><strong>T400/T500 Cooling Mod</strong></p>
+<p>This guide shows you how to improve cooling on your machine. This is especially usefull if you have done the quad mod.</p>
+</div>
+</a> <a href=/guides/other/luks-suspend.html>
+<div class="indexentry">
+<p><strong>Extremely Secure Full Disk Encryption with Suspend-to-Ram</strong></p>
+<p>LUKS encryption is an extremely useful way to keep your data safe. Running GRUB from your system firmware lets you get even more bang for your encryption-buck.</p>
+</div>
+</a> <a href=/guides/other/quad.html>
+<div class="indexentry">
+<p><strong>T400/T500 Quad Mod Guide</strong></p>
+<p>The quad mod is a must for pushing your old thinkpad to compete with modern hardware. This guide makes the process easy for first timers; even if you’ve never touched a soldering iron.</p>
+</div>
+<p></a></p>
+</body>
+</div>
+</html>

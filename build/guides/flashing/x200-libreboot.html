@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Thinkpad X200 Libreboot Guide</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../templates/style.css" />
+<div class="navbar" >
+	<a href="/index.html"><div class="navbar_item"><li>&#160&#160&#160;Home&#160&#160&#160;</li></div></a><a href="/guides"><div class="navbar_item"><li>&#160&#160&#160;Guides&#160&#160&#160;</li></div></a><a href="/resources"><div class="navbar_item"><li>&#160&#160&#160;Resources&#160&#160&#160;</li></div></a><a href="/contact"><div class="navbar_item"><li>&#160&#160&#160;Contact&#160&#160&#160;</li></div></a><a href="https://www.ebay.ca/sch/calagr93/m.html"><div class="navbar_item"><li>&#160&#160&#160;Store&#160&#160&#160;</li></div></a>
+</div>
+<br>
+<div class="rest">
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Thinkpad X200 Libreboot Guide</h1>
+</header>
+<h2 id="tools">Tools</h2>
+<p>You’ll need SPI flashing equipment in order to follow this guide. The official Libreboot documentation recommends against the Raspberrypi Pi as it supports some nonfree software (inter alia). You can use basically any board with the correct GPIO pins but you’ll have to determine the pinout yourself. I find that since most guides are written for the Pi and a lot of people (including me) have them already, it’s a decent choice.</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 50%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Item</strong></th>
+<th style="text-align: left;"><strong>Notes</strong></th>
+<th style="text-align: left;"><strong>Link</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SBC for SPI flashing</td>
+<td style="text-align: left;">If you don’t know where to start, just go with the raspberry pi 3B</td>
+<td style="text-align: left;"><a href="https://www.raspberrypi.com/products/">Raspberrypi.com</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dupont Cables</td>
+<td style="text-align: left;">There are lots of places to get these for very cheap</td>
+<td style="text-align: left;"><a href="https://www.amazon.ca/RGBZONE-Multicolored-Breadboard-Arduino-Raspberry/dp/B08TWSV2DY">Amazon</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SOIC clip(s)</td>
+<td style="text-align: left;">Finding these things outside mainland china is almost impossible. The link provided is afaik the only place to get them at a reasonable price in North America.</td>
+<td style="text-align: left;"><a href="https://www.valuetronics.com/product/5252-pomona-accessory-new">Valuetronics - 8MB</a> <a href="https://www.valuetronics.com/product/5250-pomona-clip-new">Valutronics - 4MB</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Thermal paste*</td>
+<td style="text-align: left;">MX-4 is the standard thermal paste.</td>
+<td style="text-align: left;"><a href="https://www.amazon.com/ARCTIC-MX-4-2019-Performance-Durability/dp/B07L9BDY3T">Amazon</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wireless Card</td>
+<td style="text-align: left;">The intel wifi cards installed by default are not supported with free software. You’ll need to install a new one in order to use wifi after installing libreboot. Most atheros cards will work. Just make sure the card you get is for PCI mini express, not PCI mini.</td>
+<td style="text-align: left;"><a href="https://www.amazon.com/Yosoo-Network-Atheros-Wireless-Bluetooth/dp/B07L1PJGG2/">Amazon</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="machine-tear-down">Machine Tear-Down</h2>
+<p>The tear-down for the X200 is exceedingly simple, but I’ll detail it just in case.</p>
+<p><strong>Step 1:</strong> Remove the screws marked with the keyboard or palmrest logo from the bottom of the machine. When in doubt, just unscrew. All of the screws are the same, so you needn’t worry.</p>
+<p><strong>Step 2:</strong> Remove the keyboard and palmrest by just prying them up.</p>
+<p><a href="/assets/x200-libreboot-guide/x200topView_orig.webp"><img src="/assets/x200-libreboot-guide/x200topView.webp" /></a></p>
+<p><strong>Step 3:</strong> Unplug the Keyboard and palmrest.</p>
+<p><a href="/assets/x200-libreboot-guide/x200Unplug_orig.webp"><img src="/assets/x200-libreboot-guide/x200Unplug.webp" /></a></p>
+<h2 id="flashing">Flashing</h2>
+<p>You can now proceed to <a href="/guides/flashing/flashing.html">flashing,</a> the bios chip located above the ram slots.</p>
+</body>
+</div>
+</html>

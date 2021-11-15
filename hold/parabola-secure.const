@@ -1,0 +1,74 @@
+---
+toc: true
+---
+
+# Creating the Perfect Encrypted Libreboot Machine {.unlisted .unnumbered}
+
+This guide is a companion to my much more verbose [luks2 encryption guide.](/guides/other/luks-suspend.html)
+The other guide is a more general explanation which provides a lot of context for this guide.
+You can read the other guide and come back if you want more information.
+
+This guide will explain how to set up a librebooted thinkpad with full disk encryption (including boot) and a suspend-to-RAM feature.
+I chose to install [Parabola](https://www.parabola.nu/) for this guide because:
+
++ It's a totally free distro, so it contains no proprietary code
++ It's rolling-release, which makes maintenance easier than something like trisquel
++ It's arch-based, giving users access to the extensive Arch User Repository (AUR)
+
+## Create and Boot Installation Media
+
+Get the latest iso from the [parabola downloads site.](https://www.parabola.nu/download/)
+I recommend getting one of the 'complete' isos as it gives you a graphical working environment to install.
+I'll be using the 'Parabola SystemD LXDE ISO' for this guide.
+
+**Step 1:**
+Write the iso to your usb/sdcard.
+I'll assume your installation media is '/dev/sdb.'
+Check with lsblk if your unsure which drive is your installation media.
+
+```
+sudo dd if=parabola-x86_64-systemd-lxde-*-pre-complete.iso of=/dev/sdb bs=4M status=progress
+sync && echo 'done' # wait for this command to exit before ejecting the drive
+```
+
+**Step 2:**
+Reboot your machine and boot from your installation media.
+GRUB will have issues properly booting the usb.
+Thankfully, you can easily boot the installation media from seabios by pressing <kbd>b</kbd> at the grub menu.
+From seabios, hit <kbd>Esc</kbd> to get a boot device list.
+Type the number preceding your boot-device and hit enter, for example <kbd>3</kbd> <kbd>Enter</kbd>
+
+## Create LUKS Devices
+
+**Step 1:**
+Open Gparted from the top menu under 'System tools.'
+You can accept all the defaults as you move through gparted, including the ext4 filesysetm (even though we'll destroy it in the next step).
+From Gparted, do the following:
+
+	+ Select your primary disk (generally /dev/sda).
+	+ Create an msdos partition table: *Device > Create Partition Table.*
+	+ Create a 2GB primary partition: *right click empty space > New > Size 2048
+	+ Format the remaining space
+	+ Press the green checkmark to apply all the changes
+	+ Exit the program
+
+**Step 2:**
+Open a terminal and create the LUKS devices.
+
+```
+sudo cryptsetup luksFormat /dev/sda1 --type luks2 --pbkdf pbkdf2 --pbkdf-force-iterations 20000
+sudo cryptsetup luksFormat /dev/sda2
+sudo cryptsetup luksOpen /dev/sda1 boot
+sudo mkfs.ext4 -L boot /dev/mapper/boot
+sudo cryptsetup luksOpen /dev/sda2 root
+sudo mkfs.ext4 /dev/mapper/root
+sudo mount /dev/mapper/root /mnt
+sudo mkdir /mnt/boot && sudo mkdir -p /mnt/home
+sudo mount /dev/mapper/boot /mnt/boot
+```
+
+## Install Parabola
+
+Unfortunately, you can't use the graphical installer for this type of setup.
+Follow the manual installation instructions from the [official guide.](https://wiki.parabola.nu/Installation_Guide#Installation)
+Skip mounting and formating partitions, as we've already done that.

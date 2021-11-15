@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>T400/T500 Quad Mod Guide</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../templates/style.css" />
+<div class="navbar" >
+	<a href="/index.html"><div class="navbar_item"><li>&#160&#160&#160;Home&#160&#160&#160;</li></div></a><a href="/guides"><div class="navbar_item"><li>&#160&#160&#160;Guides&#160&#160&#160;</li></div></a><a href="/resources"><div class="navbar_item"><li>&#160&#160&#160;Resources&#160&#160&#160;</li></div></a><a href="/contact"><div class="navbar_item"><li>&#160&#160&#160;Contact&#160&#160&#160;</li></div></a><a href="https://www.ebay.ca/sch/calagr93/m.html"><div class="navbar_item"><li>&#160&#160&#160;Store&#160&#160&#160;</li></div></a>
+</div>
+<br>
+<div class="rest">
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">T400/T500 Quad Mod Guide</h1>
+</header>
+<p>This guide will detail how to modify a librebooted Thinkpad T400/T500 to use a quad core CPU. This modification takes advantage of the fact that Intel’s core 2 Duos for classic Thinkpads use the same <em>shape</em> of socket (G) as the more powerful quad core chips. Just the fact that the chip fits does not mean however, that it will work. The actual pins themselves have to line up to send the correct information through the corresponding connection. Since the pin <em>layout</em> is different for the duos and the quads, the cpu will not understand the inputs from the components on the motherboard. Thankfully, a helpful German engineer detailed his success modifying the quads to work in a T500. The original <a href="https://thinkpad-forum.de/threads/199129">german forum post</a> was then translated into English and posted on <a href="http://tripcodeq7.xyz/7/7.html">Tripcode’s website.</a> Both sources note that the process could theoretically apply to the T400. I tested the mod on a T400 and found that the mod does, in fact, work exactly the same.</p>
+<p>The resources noted above form the source material for this guide and are excellent in their own right. As usual, this guide is an extension of the source material aimed at helping people with no background knowledge.</p>
+<h2 id="tools">Tools</h2>
+<p>You’ll need a few tools to get the job done. You don’t absolutely <em>have to</em> have a magnification device, but it really helps. All links are included as reference only, I do not endorse any of the specific products.</p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Item</strong></th>
+<th style="text-align: left;"><strong>Note</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wire</td>
+<td style="text-align: left;">The wire you use should be 30 AWG You also want it to be solid core. <a href="https://www.amazon.ca/HuaHuiYuan-Colored-Insulation-B-30-1000-Wrapping/dp/B072SHF29S">Amazon</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Solder Wire</td>
+<td style="text-align: left;">It should be flux (rosin) core and contain lead. Do <strong>not</strong> use lead-free <a href="https://www.amazon.com/TOWOT-Electrical-Soldering-Content-Sn60-Pd40/dp/B0943TQBD9">Amazon</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Soldering Iron</td>
+<td style="text-align: left;">A cheap set is all you need. The one linked comes with its own sponge. <a href="https://www.amazon.com/Soldering-Iron-Kit-Temperature-Desoldering/dp/B07S61WT16">Amazon</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Magnification Tool</td>
+<td style="text-align: left;">You can go with a cheap microscope or a simple magnifying glass holder <a href="https://www.amazon.com/Gaxi-Electronic-Microscope-Soldering-Magnifier/dp/B09GK1M9QZ">Microscope</a> <a href="https://www.amazon.com/SE-MZ101B-Helping-Hand-Magnifier/dp/B000RB38X8">Magnifying glass</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cpu-options">CPU Options</h2>
+<p>You have three separate options for quad-core chips listed in the table below. You’ll notice that the Q9000 is an absolute steal of a deal (especially if you’re willing to wait for shipping).</p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 32%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Chip</strong></th>
+<th style="text-align: left;"><strong>Clock Speed</strong></th>
+<th style="text-align: left;"><strong>Price (USD)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Core Extreme QX9300</td>
+<td style="text-align: left;">2.53 GHz</td>
+<td style="text-align: left;">80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Core 2 Quad Q9100</td>
+<td style="text-align: left;">2.26 GHz</td>
+<td style="text-align: left;">70</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Core 2 Quad Q9000</td>
+<td style="text-align: left;">2.00 GHz</td>
+<td style="text-align: left;">35</td>
+</tr>
+</tbody>
+</table>
+<p>The 2GHz clock speed of the Q9000 means that it will actually have <em>worse</em> single core performance than a T9800 duo (which is the best chip you can get stock). All of these chips have a 45W TDP (stock chips are 35W) which means they will all use more battery regardless of how much you push the chip.</p>
+<p>A lot of noise is made about thermals for obvious reasons. When you change a core part of any machine, you should be darn sure that it’s not something that can kill your machine. In this case however, I think the thermal issues are over-hyped. The Linux Kernel has a decent scheduler, and you’re really not at risk of frying your machine with the QX9300. I use my T400 with a QX9300 as my daily driver and I’ve never seen it push past 70 degrees. For reference, the max temperature is <a href="https://ark.intel.com/content/www/us/en/ark/products/36727/intel-core2-extreme-processor-qx9300-12m-cache-2-53-ghz-1066-mhz-fsb.html">99 degrees.</a> (you should absolutely <strong>not</strong> push it that far though). You should do the cooling mod anyway, if for no other reason than it makes your machine look cool.</p>
+<h2 id="tear-down">Tear-down</h2>
+<p>The first step to doing the mod is to completely disassemble the machine to reveal the motherboard.</p>
+<p>I have a <a href="/guides/flashing/t400-libreboot.html">T400 libreboot guide</a> which has excellent tear-down diagrams and screw-guides. For the T500, you can refer to the <a href="https://libreboot.org/docs/install/t500_external.html">libreboot docs</a> while my T500 guide is under construction.</p>
+<h2 id="modifying-the-chip">Modifying the Chip</h2>
+<p><strong>Step 1:</strong> Start by removing the existing chip from the socket. Once you make a single half-turn on the screw the chip will pop right out.</p>
+<p><a href="/assets/quad/removeCpu_orig.webp"><img src="/assets/quad/removeCpu.webp" /></a></p>
+<p><strong>Step 2:</strong> Clip off the unnecessary pins from your quad chip. This is the trickiest part of the process besides soldering. Use tweezers to bend the pins back and forth until they break off of the quad chip cleanly. You do not need to bend the pins <em>all</em> the way over. By moving the pins with minimal force in all directions a half-dozen times you can break it off without bending your other pins too much. The picture below is from the original German forum post and it shows you which pins you need to break off.</p>
+<p><a href="/assets/quad/clipthese_orig.webp"><img src="/assets/quad/clipthese.webp" /></a></p>
+<p>When you’re done, check for any bent pins and try to bend them back into place. If a pin is just a bit out of place then it will still seat in the socket in the end. Don’t fret if your chip doesn’t go in right away, you can safely fiddle it in by hand (wiggle it on the socket until it seats). Don’t put the new chip in just yet though.</p>
+<h2 id="setting-up-the-mainboard">Setting up the Mainboard</h2>
+<p><strong>Step 1:</strong> Prepare the motherboard by wiping it down with isopropyl alcohol and scrub it with a toothbrush. Make sure the area where you’ll be soldering looks squeaky clean.</p>
+<p><strong>Step 2:</strong> Locate the pins to jump on the bottom of the mainboard. The image below shows where the wire should go - from pin D22 to AD26.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><a href="/assets/quad/pinToPin_orig.webp"><img src="/assets/quad/pinToPin.webp" /></a></td>
+<td style="text-align: center;"><a href="/assets/quad/mobo_orig.webp"><img src="/assets/quad/mobo.webp" /></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3:</strong> Cut and strip your wire to make sure it fits. You want the wire to be as short as possible, and go as deep as possible into the pin holes. Making the wire the right depth is a breeze with the T400, since it goes right through the pcb on the AD26 pin.</p>
+<p><img src="/assets/quad/wirePeak.webp" /></p>
+<p>For the T500 you’ll have to work on both ends to get the wire to the right length.</p>
+<p><strong>Step 4:</strong> Once you get the wire in place, you can tape it down to hold it in place while you solder it</p>
+<p><a href="/assets/quad/tapeHold_orig.webp"><img src="/assets/quad/tapeHold.webp" /></a></p>
+<h2 id="soldering">Soldering</h2>
+<p>This is absolutely the main area of hesitancy for beginners as it seems really daunting if you’ve never soldered anything before. The basics of soldering are fortunately simple.</p>
+<p>Soldering is an attempt to heat up two conductive materials to the point where solder will melt onto <em>both</em> materials to create a conductive bond. I’ll list some dos and donts to help you out if you’re still lost.</p>
+<p><strong>Do:</strong></p>
+<ul>
+<li>Tin the iron by applying some solder directly to the tip of the iron as soon as it gets hot</li>
+<li>Hold the iron against the wire and push the solder against the opposite side of the wire</li>
+<li>Clean any excess solder off the pcb immediately by melting it onto the iron and wiping your iron on a wet sponge</li>
+</ul>
+<p><strong>Don’t:</strong></p>
+<ul>
+<li>Drop steaming-hot solder directly onto the board
+<ul>
+<li>You want the wire to heat up and bond with the solder, not just to be covered in solder</li>
+</ul></li>
+<li>Keep trying when you’re making a mess of the board with burnt-looking material
+<ul>
+<li>Once you see grime building up then you’ve likely ruined your solder tip</li>
+<li>If you see a mess: turn off the iron, clean up the mess, clean the solder tip once it has cooled down</li>
+</ul></li>
+</ul>
+<p><strong>Step 1:</strong> Locate the wire under your microscope/magnifying glass. You can make do without magnification, it’s just more difficult.</p>
+<p><a href="/assets/quad/microscopeStart_orig.webp"><img src="/assets/quad/microscopeStart.webp" /></a></p>
+<p><strong>Step 2:</strong> The moment of truth. Carefully hold the tip of the soldering iron against the wire while you touch the solder to the opposite side. Once the wire is hot enough, the solder should melt into the pin hole and onto the wire.</p>
+<p><strong>Step 3:</strong> Check that you have a good connection. The main thing to avoid is a <em>bridged</em> connection. A connection is bridged where solder spreads to unintentionally connect two components. In this case, you want to make sure your solder hasn’t spread to other pins. The photo here is not a very good one, I took it before cleaning the board and after using an old solder tip. Still, the image should give you a reference of how much solder you need and what it looks like on the wire.</p>
+<p><a href="/assets/quad/microscopeDone_orig.webp"><img src="/assets/quad/microscopeDone.webp" /></a></p>
+<h1 id="finishing-up">Finishing up</h1>
+<p><strong>Step 1:</strong> I always place a piece of electrical tape below the wire and fold it over. I have no scientific reasons for doing this, but I haven’t had a single issue with a quad mod since I started doing it. I figure it helps because it will stop the CPU mount from crushing the wire and stop the wire from bridging if it moves during re-assembly. Simply push some tape underneath the wire, then fold it over on top of itself.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><a href="/assets/quad/tapeBelow_orig.webp"><img src="/assets/quad/tapeBelow.webp" /></a></td>
+<td style="text-align: center;"><a href="/assets/quad/tapeDone_orig.webp"><img src="/assets/quad/tapeDone.webp" /></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2:</strong> Fire in the new CPU then plug in the display, keyboard, and power to test if everything is working. If the machine doesn’t boot, try cleaning and soldering the mainboard again.</p>
+<p><a href="/assets/flash/test_orig.webp"><img src="/assets/flash/test.webp" /></a></p>
+</body>
+</div>
+</html>

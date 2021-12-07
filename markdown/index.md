@@ -6,6 +6,10 @@ title: Why Old Thinkpads?
 This site is aimed at giving comprehensive guides for using old thinkpads in the modern day.
 If you want to jump into it, then head over to the [starting out](/guides/other/starting.html) guide.
 
+I found that much of the information about using older thinkpads is spread around the internet.
+This site is an ongoing attempt to collate the various sources into one site.
+If you want to see the sources I pull from, then check out the [resources page.](/resources/index.html)
+
 For many people, the answer is simply the Intel Management Engine (IME).
 This little subsystem runs in the background on basically every modern machine, transmitting your data who knows where.
 The *IME* is also impossible to remove on any intel I-series chip.

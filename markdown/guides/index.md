@@ -9,6 +9,11 @@ Did you know that once you have flashed your machine externally, you no longer n
 
 The seeming complexity of flashing your old thinkpad might make you reticent to shell out for some SOIC clips. This simple guide will show you how easy the process really is with a simple shell script.
 </div></a>
+<a href=/guides/flashing/general.html><div class=indexentry>
+**General Libreboot Notes**
+
+An introduction to librebooting for those who have never done it before.
+</div></a>
 <a href=/guides/flashing/t400-libreboot.html><div class=indexentry>
 **Thinkpad T400 Libreboot Guide**
 
@@ -31,10 +36,15 @@ The X200 is overrated in my humble opinion. The immense popularity of this tiny 
 
 A map of the thinkpad landscape. This guide details features, usage, and my opninion of various thinkpad models.
 </div></a>
+<a href=/guides/other/comparequads.html><div class=indexentry>
+**Quad Core T400 Benchmarks**
+
+The results of some benchmarks done with quad core CPUS on a T400.
+</div></a>
 <a href=/guides/other/cool.html><div class=indexentry>
 **T400/T500 Cooling Mod**
 
-This guide shows you how to improve cooling on your machine. This is especially usefull if you have done the quad mod.
+This guide shows you how to improve cooling on your machine. This is especially useful if you have done the quad mod.
 </div></a>
 <a href=/guides/other/luks-suspend.html><div class=indexentry>
 **Extremely Secure Full Disk Encryption with Suspend-to-Ram**
@@ -50,4 +60,9 @@ The quad mod is a must for pushing your old thinkpad to compete with modern hard
 **Starting Out With Libreboot**
 
 A simple introduction to libreboot. This guide will tell you everything you need to know to get the top-performing fully free thinkpad you can get.
+</div></a>
+<a href=/guides/other/theming.html><div class=indexentry>
+**Libreboot Theming**
+
+A guide to creating a beautiful custom libreboot theme.
 </div></a>

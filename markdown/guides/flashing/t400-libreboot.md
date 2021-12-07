@@ -5,6 +5,7 @@ title: Thinkpad T400 Libreboot Guide
 
 This guide is intended for those who want to install libreboot on their machine but have absolutely no prior knowledge.
 Feel free to skip this intro section if you already know the basics of libreboot.
+If it's you're first time, you should definitely check out the [general libreboot guide](/guides/flashing/general.html) before flashing.
 
 ## Tools
 

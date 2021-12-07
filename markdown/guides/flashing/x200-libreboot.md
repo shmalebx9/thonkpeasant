@@ -3,6 +3,8 @@ abstract: The X200 is overrated in my humble opinion. The immense popularity of 
 title: Thinkpad X200 Libreboot Guide
 ...
 
+If it's you're first time, you should definitely check out the [general libreboot guide](/guides/flashing/general.html) before flashing.
+
 ## Tools
 
 You'll need SPI flashing equipment in order to follow this guide.

@@ -1,13 +1,19 @@
 #!/bin/bash
 
-ignore="store"
+ignore=(store resources contact)
+
+for ignoredir in ${ignore[@]} ; do
+ echo "ignoring $ignoredir"
+ ignorestring+="! -path *$ignoredir* "
+done
 
 Make_navbar(){
 echo "navbar:"
 echo " - {name: Home, link: /index.html}"
-for dir in $(find markdown -mindepth 1 -maxdepth 1 -type d -not -path "*$ignore*" -printf '%f\n') ; do
+for dir in $(find markdown -mindepth 1 -maxdepth 1 -type d $ignorestring -printf '%f\n') ; do
  echo " - {name: ${dir^}, link: /$dir}" 
 done
+echo " - {name: Contact, link: /contact}"
 echo " - {name: Store, link: https://www.ebay.ca/sch/calagr93/m.html}"
 }
 

@@ -26,7 +26,7 @@ body {
 .toc {
 	border: 2px solid var(--elementfg) ;
 	border-radius: 10px;
-	padding-right: 10px ;
+	padding: 0px 5px 0px 5px;
 	background: var(--tocbg);
 	float: left;
 	position: fixed;
@@ -36,12 +36,14 @@ body {
 	max-width: 17%;
 }
 .toc ul {
-	list-style-type: none;
 	padding: 5px 0px 5px 15px;
+	list-style-position:inside;
+	list-style-type: none;
 }
+.toc li {padding: 0px 0px 5px 0px}
 nav {
 	color: var(--fgalt);
-	font-size: 110%;
+	font-size: 90%;
 }
 h1 {
 	margin-bottom: 5px;

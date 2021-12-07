@@ -5,6 +5,7 @@ title: Thinkpad T500 Libreboot Guide
 
 This guide is aimed at noobs who have never taken apart a laptop before.
 The [official libreboot guide](https://libreboot.org/docs/install/t500_external.html) has more pictures but does not have the screw location maps in this guide.
+If it's you're first time, you should definitely check out the [general libreboot guide](/guides/flashing/general.html) before flashing.
 If you get stuck, you can always refer back to the official guide and come back here when you have to put the machine back together.
 
 ## Tools

@@ -34,7 +34,7 @@ $(BUILD_DIR)%.html: $(MD_DIR)%.md $(TMPL_FILES)
 	pandoc --template=$(TMPL_DIR)$(if $(CUSTOM_TMPL),$(CUSTOM_TMPL),$(DEFAULT_TMPL)) \
 	--css=$(shell sed 's/[^/]//g; s/\//..\//g' <<<$(@D))$(DEFAULT_CSS) \
 	--metadata-file=.site.yml --toc \
-	--lua-filter=lighty.lua
+	--lua-filter=lighty.lua \
 	-o "$@" "$<" ; else \
 	pandoc --template=$(TMPL_DIR)$(if $(CUSTOM_TMPL),$(CUSTOM_TMPL),$(DEFAULT_TMPL)) \
 	--lua-filter=lighty.lua \
